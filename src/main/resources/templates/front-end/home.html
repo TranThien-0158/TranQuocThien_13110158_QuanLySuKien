@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	  <head th:replace="master::head">
+	
+	  </head>	
+	  <body>
+  		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  			<div th:replace="master::header">
+  			
+  			</div>
+  			<div th:replace="master::sidenav">
+  			
+  			</div>
+  			<main class="mdl-layout__content">
+  				<div class="page-content">
+	               <div id="myCarousel" class="carousel slide" data-ride="carousel">
+	                  <!-- Indicators -->
+	                  <ol class="carousel-indicators">
+					    <li data-target="#myCarousel" data-slide-to="0" th:class="${index.count == 0} ? 'active' : ''"  th:each="event,index:${eventtops}"></li>
+					  </ol>
+	                  <!-- Wrapper for slides -->
+	                  <div class="carousel-inner" role="listbox">
+	                     <div  th:class="${index.count == 1} ? 'item active' : 'item'"  th:each="event,index:${eventtops}">
+	                        <a th:href="@{'/detail/'+${event.id}}"><img th:src="'/banner/'+${event.banner}" alt="Chania" /></a>
+	                     </div>
+	                  </div>
+	                  <!-- Left and right controls -->
+	                  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+	                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	                  <span class="sr-only">Previous</span>
+	                  </a>
+	                  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+	                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	                  <span class="sr-only">Next</span>
+	                  </a>
+	               </div>
+	               <h2 class="text-center">Sự kiện nổi bật</h2>
+	               <div class="container">
+	                  <div class="row">
+	                     <div th:each="event:${eventnormals}" class="col-md-6">
+	                        <div class="card">
+	                           <div class="card-image">
+	                              <img class="img-responsive" th:src="'/banner/'+${event.banner}"/>
+	                           </div>
+	                           <!-- card image -->
+	                           <div class="card-content">
+	                              <span class="card-title"><a th:href="@{'/detail/'+${event.id}}" th:text="${event.title}">Giải xe đạp vô địch thế giới</a></span>                    
+	                              <button type="button" th:id="${'show'+{event.id}}" class="btn btn-custom pull-right" aria-label="Left Align">
+	                              <i class="material-icons">more_vert</i> 
+	                              </button>
+	                              <div class="mdl-tooltip" th:attr="data-mdl-for=${'show'+{event.id}}">
+	                                 Tham gia sự kiện
+	                              </div>
+	                              <ul class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" th:for="${'show'+ {event.id}}">
+	                                 <li class="mdl-menu__item">
+	                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+	                                    <input type="radio" id="option-1" class="mdl-radio__button" th:name="'options'+${event.id}" value="1" checked="true"/>
+	                                    <span class="mdl-radio__label">Không</span>
+	                                    </label>
+	                                 </li>
+	                                 <li class="mdl-menu__item">
+	                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+	                                    <input type="radio" id="option-2" class="mdl-radio__button" th:name="'options'+${event.id}" value="2"/>
+	                                    <span class="mdl-radio__label">Có lẽ</span>
+	                                    </label>
+	                                 </li>
+	                                 <li class="mdl-menu__item">
+	                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
+	                                    <input type="radio" id="option-3" class="mdl-radio__button" th:name="'options'+${event.id}" value="3"/>
+	                                    <span class="mdl-radio__label">Tham dự</span>
+	                                    </label>
+	                                 </li>
+	                              </ul>
+	                           </div>
+	                           <!-- card content -->
+	                           <div class="card-action">
+	                              <p>Ngày diễn ra: <span th:text="${#calendars.format(event.starttime)}"></span></p>
+	                              <a th:href="@{'/category/'+${event.topic.getId()}}" th:text="${event.topic.getName()}">Thể thao</a>
+	                              <a th:href="@{'/place/'+${event.place.getId()}}"  th:text="${event.place.getName_place()}">Khoa Công Nghệ Thông Tin</a>
+	                              <span class="pull-right" th:text="${event.view} + ' lượt xem'" >
+	                              	<i class="material-icons">remove_red_eye</i>
+	                              </span>
+	                           </div>
+	                           <!-- card actions -->
+	                           <div class="mdl-card__menu">
+	                              <button th:id="${'tt'+{event.id}}" type="submit" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+	                              <i class="material-icons" style="color:red">favorite</i>
+	                              </button>
+	                              <div class="mdl-tooltip" th:attr="for=${'tt'+{event.id}}">
+	                                 Yêu thích
+	                              </div>
+	                           </div>
+	                        </div>
+	                     </div>
+	                  </div>
+	               </div>
+	            </div>
+  				<div class="gap"></div>
+  				<div th:replace="master::footer"></div>
+  			</main>
+  		</div>
+	   <script src="../static/front-end/js/jquery.min.js" th:src="@{/front-end/js/jquery.min.js}"></script>
+	   <script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+	   <script src="../static/front-end/bootstrap/js/bootstrap.min.js" th:src="@{/front-end/bootstrap/js/bootstrap.min.js}"></script>
+	  </body>
+</html>

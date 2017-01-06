@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head th:replace="master::head">
+   </head>
+   <body onload="scrollDown()">
+      <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+         <div th:replace="master::header">
+         </div>
+         <div th:replace="master::sidenav">
+         </div>
+         <main class="mdl-layout__content">
+            <div class="page-content">
+
+               <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                  <ol class="carousel-indicators">
+                     <li data-target="#myCarousel" data-slide-to="0" th:class="${index.count == 0} ? 'active' : ''"  th:each="event,index:${eventtops}"></li>
+                  </ol>
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner" role="listbox">
+                     <div  th:class="${index.count == 1} ? 'item active' : 'item'"  th:each="event,index:${eventtops}">
+                        <img th:src="'/banner/'+${event.banner}" alt="Chania" />
+                     </div>
+                  </div>
+                  <!-- Left and right controls -->
+                  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                  </a>
+               </div>
+               
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="col-md-9">
+                        <div class="card">
+                           <div class="panel panel-primary" style="border:none">
+                              <div class="panel-heading" >
+                                 <h3 th:text="${eventdetail.title}"></h3>
+                              </div>
+                              <div class="panel-body">
+                                 <h4 class="pull-left">Thời gian:<strong th:text="${#calendars.format(eventdetail.starttime)}" >20/09/1995</strong></h4>
+                                 <h5 class="pull-right">Tác giả:<span th:text="${eventdetail.account.getFullname()}"></span></h5>
+                                 <br></br>
+                                 <hr>
+                                 </hr>
+                                 <img th:src="'/banner/'+${eventdetail.banner}" width="100%" class="img-responsive" alt=""/>
+                                 <br></br>
+                                 <hr>
+                                 </hr>
+                                 <div th:utext="${eventdetail.content}"></div>
+                              </div>
+                           </div>
+                           	
+                        </div>
+                        <div class="card">
+                        <div class="container">
+                           <div class="col-sm-9">
+                              <div class="panel panel-white post panel-shadow">
+                                 <h3 style="margin-left:10px">Bình luận</h3>
+                                 <div class="col-md-12">
+                                    <div class="widget-area no-padding blank">
+                                       <div class="status-upload" th:if="${session.sessionUser}">
+                                          <form th:action="@{'/detail/'+${eventdetail.id}}" th:object="${comment}" method="POST">
+                                             <input type="hidden" th:field="*{id}" />
+                                             <textarea placeholder="Viết nội dung bình luận?" th:field="*{content}"></textarea>
+                                             <button type="submit" class="btn btn-success green"><i class="fa fa-send"></i> Submit</button>
+                                          </form>
+                                       </div>
+                                       <!-- Status Upload  -->
+                                    </div>
+                                    <!-- Widget Area -->
+                                 </div>
+                                 <div class="card-body">
+                                    <div class="post-footer">
+                                       <ul class="comments-list">
+                                          <li class="comment" th:each="comment:${comments}">
+                                             <a class="pull-left" href="#">
+                                             <img class="avatar" th:src="'/upload/'+${comment.account.getAvatar()}" alt="avatar" />
+                                             </a>
+                                             <div class="comment-body">
+                                                <div class="comment-heading">
+                                                   <h4 class="user" th:text="${comment.account.getFullname()}">Trần Quốc Thiện</h4>
+                                                   <h5 class="time" th:text="${#dates.format(comment.created_at, 'dd-MM-yyyy HH:mm')}">5 minutes ago</h5>
+                                                </div>
+                                                <p th:text="${comment.content}">Sure, oooooooooooooooohhhhhhhhhhhhhhhhure, oooooooooooooooohhhhhhhhhhhhhhhhure, oooooooooooooooohhhhhhhhhhhhhhhhure, oooooooooooooooohhhhhhhhhhhhhhhh</p>
+                                             </div>
+                                             <hr>
+                                             </hr>
+                                          </li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="card">
+                           <div class="panel panel-primary" style="border:none">
+                              <div class="panel-heading text-center">Thông Tin Sự Kiện</div>
+                              <div class="panel-body">
+                                 <div class="profile-sidebar">
+                                    <!-- SIDEBAR USERPIC -->
+                                    <div class="profile-userpic">
+                                       <img th:src="'/banner/'+${eventdetail.banner}" width="100%" class="img-responsive" alt=""/>
+                                    </div>
+                                    <!-- END SIDEBAR USERPIC -->
+                                    <!-- SIDEBAR USER TITLE -->
+                                    <div class="profile-usertitle">
+                                       <div class="profile-usertitle-name" th:text="${eventdetail.title}">
+                                       </div>
+                                    </div>
+                                    <!-- END SIDEBAR USER TITLE -->
+                                    <!-- SIDEBAR BUTTONS -->
+                                    <div class="profile-userbuttons">
+                                       <form th:if="${session.sessionUser}"  method="POST" th:object="${attend}" th:action="@{'/attendant/'+${eventdetail.id}}">
+                                          <button th:if="${checkattend} == 0" type="submit" class="btn btn-success btn-block btn-sm">Tham gia</button>
+                                          <a th:if="${checkattend} != 0" th:href="@{'/attendant-event/'+${eventdetail.id}}" class="btn btn-danger btn-block btn-sm">Huỷ tham gia</a>
+                                       </form>
+                                       <hr>
+                                       </hr>
+                                       <form th:if="${session.sessionUser}"  method="POST" th:object="${hobby}" th:action="@{'/farorite/'+${eventdetail.id}}">
+                                          <button th:if="${checkfavorite} == 0" type="submit" class="btn btn-success btn-block btn-sm">Yêu Thích</button>
+                                       	  <a th:if="${checkfavorite} != 0" th:href="@{'/favorite-event/'+${eventdetail.id}}" class="btn btn-danger btn-block btn-sm">Huỷ theo dõi</a>
+                                       </form>
+                                       <hr>
+                                       </hr>
+                                    </div>
+                                    <!-- END SIDEBAR BUTTONS -->
+                                    <!-- SIDEBAR MENU -->
+                                    <div class="profile-usermenu">
+                                       <ul class="nav">
+                                          <li>
+                                             <a>
+                                             <i class="glyphicon glyphicon-time"></i><span th:text="${#dates.format(eventdetail.starttime, 'dd-MM-yyyy HH:mm')}"></span></a>
+                                          </li>
+                                          <li><a>
+                                             <i class="glyphicon glyphicon-map-marker"></i>
+                                             <span th:text="${eventdetail.address}">address</span></a>
+                                          </li>
+                                          <li>
+                                             <a th:href="@{'/category/'+${eventdetail.id}}">
+                                             <i class="glyphicon glyphicon-leaf"></i>
+                                             <span th:text="${eventdetail.topic.getName()}"></span> </a>
+                                          </li>
+                                          <li>
+                                             <a th:href="@{'/category/'+${eventdetail.id}}">
+                                             <i class="glyphicon glyphicon-user"></i>
+                                             <span th:text="${eventdetail.place.getName_place()}">place</span> </a>
+                                          </li>
+                                       </ul>
+                                    </div>
+                                    <!-- END MENU -->
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="gap"></div>
+            <div th:replace="master::footer"></div>
+         </main>
+      </div>
+      <script src="../static/front-end/js/jquery.min.js" th:src="@{/front-end/js/jquery.min.js}"></script>
+      <script src="../static/js/essential-plugins.js" th:src="@{/js/essential-plugins.js}"></script>
+      <script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+      <script src="../static/front-end/bootstrap/js/bootstrap.min.js" th:src="@{/front-end/bootstrap/js/bootstrap.min.js}"></script>
+      $(document).ready(function(){
+      $(this).scrollTop(0);
+      });
+      <script src="../static/js/plugins/bootstrap-notify.min.js" th:src="@{/js/plugins/bootstrap-notify.min.js}"></script>
+      <section th:if="${message}">
+         <input type="hidden" th:value="${message}" id="contentmessage"/>
+         <script type="text/javascript">
+            var value = $("#contentmessage").val();
+            $.notify({
+            title: "success : ",
+            message: value,
+            icon: 'fa fa-check' 	
+            },{
+            type: "success"
+            });
+         </script>
+      </section>
+   </body>
+</html>

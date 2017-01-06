@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::head">
+
+</head>
+<body class="sidebar-mini fixed">
+	<div class="wrapper">
+		<!-- Navbar-->
+		<header th:replace="layout::header" class="main-header hidden-print">
+
+		</header>
+		<!-- Side-Nav-->
+		<aside th:replace="layout::sidebar" class="main-sidebar hidden-print">
+
+		</aside>
+		<div class="content-wrapper">
+			<div class="page-title">
+				<div>
+					<h1>
+						<i class="fa fa-map-marker"></i>  Địa điểm diễn ra sự kiện
+					</h1>
+				</div>
+				<div>
+					<ul class="breadcrumb">
+						<li><i class="fa fa-home fa-lg"></i></li>
+						<li>Dashboard</li>
+						<li><a href="#">Địa điểm diễn ra sự kiện</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="card">
+						<h3 class="card-title">Thêm mới địa điểm diễn ra sự kiện</h3>
+						<form th:action="@{/admin/place/add}" th:object="${place}" th:method="POST">
+							<div class="card-body">
+								<div class="form-group">
+									<label class="control-label">Địa điểm diễn ra</label> <input
+										type="text" placeholder="Nhập địa điểm diễn ra sự kiện"
+										class="form-control" th:field="*{name_place}"/>
+									<span th:if="${#fields.hasErrors('name_place')}" th:errors="*{name_place}" style="color:red">Hiển thị lỗi</span>
+								</div>
+							</div>
+							<div class="card-footer">
+								<button type="submit" class="btn btn-success icon-btn">
+									<i class="fa fa-fw fa-lg fa-check-circle"></i>Thêm địa điểm
+								</button>
+								&nbsp;&nbsp;&nbsp;
+								<button type="reset" class="btn btn-danger icon-btn">
+									<i class="fa fa-fw fa-lg fa-times-circle"></i>Huỷ
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../static/js/jquery-2.1.4.min.js"
+		th:src="@{/js/jquery-2.1.4.min.js}" type="text/javascript"></script>
+	<script src="../static/js/essential-plugins.js"
+		th:src="@{/js/essential-plugins.js}"></script>
+	<script src="../static/js/bootstrap.min.js"
+		th:src="@{/js/bootstrap.min.js}"></script>
+	<script src="../static/js/plugins/pace.min.js"
+		th:src="@{/js/plugins/pace.min.js}"></script>
+	<script src="../static/js/main.js" th:src="@{/js/main.js}"></script>
+
+
+</body>
+</html>

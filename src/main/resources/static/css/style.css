@@ -1,0 +1,6 @@
+#sampleTable tr td{
+	vertical-align:middle;
+}
+#sampleTable .style-action{
+	display:inline-table;
+}

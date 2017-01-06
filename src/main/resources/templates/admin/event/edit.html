@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head th:replace="layout::head">
+   </head>
+   <body class="sidebar-mini fixed">
+      <div class="wrapper">
+         <!-- Navbar-->
+         <header th:replace="layout::header" class="main-header hidden-print">
+         </header>
+         <!-- Side-Nav-->
+         <aside th:replace="layout::sidebar" class="main-sidebar hidden-print">
+         </aside>
+         <div class="content-wrapper">
+            <div class="page-title">
+               <div>
+                  <h1>
+                     <i class="fa fa-newspaper-o"></i>&nbsp;&nbsp;Sự Kiện
+                  </h1>
+               </div>
+               <div>
+                  <ul class="breadcrumb">
+                     <li><i class="fa fa-home fa-lg"></i></li>
+                     <li>Dashboard</li>
+                     <li><a href="#"></a></li>
+                  </ul>
+               </div>
+            </div>
+            <div class="row">
+            <div class="col-md-12">
+            <form th:action="@{/admin/event/edit}" th:object="${event}"
+                     th:method="POST" enctype="multipart/form-data">
+                     <input type="hidden" th:field="*{id}" />
+					<input type="hidden" th:field="*{banner}" />
+					<input type="hidden" th:field="*{created_at}"/>
+               <div class="card">
+                  <h3 class="card-title">Chỉnh sửa sự kiện</h3>
+                     <div class="card-body">
+                     	<div class="row">
+                     		<div class="col-md-6 col-xs-12">
+                     			<div class="form-group">
+	                              <label class="control-label">Chủ đề</label><br></br>
+	                              <select th:field="*{topic}" class="form-control">
+	                                 <option th:each="topic:${topics}" 
+	                                 		th:value="${topic.id}"
+	                                 		th:text="${topic.name}">Thể thao</option>
+	                                 
+	                              </select>
+	                           </div>
+	                           <div class="form-group">
+	                              <label class="control-label">Tiêu đề sự kiện</label> 
+	                              <input type="text" placeholder="Nhập tên sự kiện"  class="form-control" th:field="*{title}"/>
+	                              <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red">Error title</span>
+	                           </div>
+	                           <div class="form-group">
+	                              <label class="control-label">Địa điểm</label> 
+	                              <input  type="text" placeholder="Địa điểm diễn ra sự kiện" class="form-control" th:field="*{address}" />
+	                              <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color:red">Error Address</span>
+	                           </div>
+	                           <div class="form-group">
+	                              <label class="control-label">Quan trọng</label>
+	                              <div class="checkbox">
+								    <label>
+								      <input type="checkbox" th:field="*{important}" /> Nổi bật
+								    </label>
+								  </div>
+	                           </div>
+	                           <div class="form-group">
+	                              <label class="control-label">Nơi hoạt động diễn ra</label><br></br>
+	                              <select th:field="*{place}" class="form-control">
+	                                 <option th:each="place:${places}"
+	                                 		th:value="${place.id}"
+	                                 		th:text="${place.name_place}"
+	                                 >Trong Trường</option>
+	                                 
+	                               </select>
+	                           </div>
+	                           <div class="form-group">
+	                           		 <label class="control-label">Thời gian bắt đầu</label>
+					                <div class='input-group date' id='datetimepicker1'>
+					                    <input type='text' class="form-control" th:field="*{start}" th:name="start" placeholder="Nhập thời gian bắt đầ" />
+					                    <span class="input-group-addon">
+					                        <span class="fa fa-calendar"></span>
+					                    </span>
+					                </div>
+					                <span th:if="${#fields.hasErrors('starttime')}" th:errors="*{starttime}" style="color:red">Error time start</span>
+					            </div>
+	                           <div class="form-group">
+			                    <label class="control-label">Banner sự kiện</label><br></br>
+			                    <img th:if="*{banner}" th:src="'/banner/'+*{banner}" width="250px" height="200px"/>
+			                    <input id="input-1" th:type="file" th:name="file" class="file"/>
+			                    
+			                  </div>
+	                           
+	                        </div>
+	                        <div class="col-md-6 col-xs-12">
+	                        	<div class="form-group">
+	                        		<label class="control-label">Nội dung sự kiện</label>
+	                        		<textarea id="content" th:field="*{content}">
+	                           		</textarea>
+	                           		 <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}" style="color:red">Error content</span>
+	                        	</div>
+	                           <div class="form-group">
+	                        		<label class="control-label">Mô tả thêm</label>
+	                        		<textarea id="description" th:field="*{description}">
+	                           		</textarea>
+	                        	</div>
+	                        </div>
+                     	</div>
+                        
+                     </div>
+                     <div class="card-footer">
+			            <button type="submit" class="btn btn-success icon-btn">
+			            <i class="fa fa-fw fa-lg fa-check-circle"></i>Lưu lại
+			            </button>
+			            &nbsp;&nbsp;&nbsp; <button type="reset" class="btn btn-danger icon-btn">
+			            <i class="fa fa-fw fa-lg fa-times-circle"></i>Huỷ
+			            </button>
+		            </div>
+               </div>
+            
+            </form>
+         	</div>
+         </div>
+      </div>
+      </div>
+      <script src="../static/js/jquery-2.1.4.min.js"
+         th:src="@{/js/jquery-2.1.4.min.js}" type="text/javascript"></script>
+      <script src="../static/js/essential-plugins.js"
+         th:src="@{/js/essential-plugins.js}"></script>
+         <script src="../static/js/moment.js"
+         th:src="@{/js/moment.js}"></script>
+      <script src="../static/js/bootstrap.min.js"
+         th:src="@{/js/bootstrap.min.js}"></script>
+      <script src="../static/js/plugins/pace.min.js"
+         th:src="@{/js/plugins/pace.min.js}"></script>
+      <script src="../static/js/main.js" th:src="@{/js/main.js}"></script>
+      <script src="../static/js/upload/canvas-to-blob.min.js"
+         th:src="@{/js/upload/canvas-to-blob.min.js}"></script>
+      <script src="../static/js/upload/fileinput.min.js"
+         th:src="@{/js/upload/fileinput.min.js}"></script>
+      <script src="../static/js/upload/purify.min.js"
+         th:src="@{/js/upload/purify.min.js}"></script>
+      <script src="../static/js/upload/sortable.min.js"
+         th:src="@{/js/upload/sortable.min.js}"></script>
+      <script src="../static/js/plugins/bootstrap-datepicker.min.js"
+         th:src="@{/js/plugins/bootstrap-datepicker.min.js}"></script>
+      <script src="../static/js/bootstrap-datetimepicker.min.js"
+         th:src="@{/js/bootstrap-datetimepicker.min.js}"></script>
+      <script src="../static/js/upload/theme.js"
+         th:src="@{/js/upload/theme.js}"></script>
+      <script src="../static/js/locales/ar.j	s" th:src="@{/js/locales/ar.js}"></script>
+      <script src="../static/js/plugins/select2.min.js"
+         th:src="@{/js/plugins/select2.min.js}"></script>
+      <script src="../static/js/summernote.js" th:src="@{/js/summernote.js}"></script>
+      <script type="text/javascript">
+         $('#demoSelect').select2();
+         
+      </script>
+      <script>
+         $(document).ready(function() {
+             $('#content').summernote({
+             	height: 300,                 // set editor height
+             	  minHeight: null,             // set minimum height of editor
+             	  maxHeight: null,             // set maximum height of editor
+             	  focus: true
+             });
+             $('#description').summernote({
+              	height: 100,                 // set editor height
+              	  minHeight: null,             // set minimum height of editor
+              	  maxHeight: null,             // set maximum height of editor
+              	  focus: true
+              });
+         });
+      </script>
+      <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                	format:'YYYY-MM-DD hh:mm:ss'
+                });
+            });
+        </script>
+   </body>
+</html>

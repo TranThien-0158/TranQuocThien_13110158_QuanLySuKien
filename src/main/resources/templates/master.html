@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="head">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- CSS-->
+   	<link rel="stylesheet" type="text/css" href="../static/front-end/css/stype.css" th:href="@{/front-end/css/style.css}"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css"/>
+    <link rel="stylesheet" href="../static/front-end/css/style.css" th:href="@{/front-end/css/style.css}" type="text/css"/>
+    <link rel="stylesheet" href="../static/front-end/css/styles.css" th:href="@{/front-end/css/styles.css}" type="text/css"/>
+    <link rel="stylesheet" href="../static/front-end/bootstrap/css/bootstrap.css" th:href="@{/front-end/bootstrap/css/bootstrap.css}" type="text/css"/>
+    <link rel="stylesheet" href="../static/front-end/css/font-awesome.css" th:href="@{/front-end/css/font-awesome.css}" type="text/css"/>
+    <title>Quản lý sự kiện</title>
+    
+    
+   	<link rel="stylesheet" type="text/css" href="../static/css/stype.css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/sweetalert2.min.css" th:href="@{/css/sweetalert2.min.css}"/>
+  </head>	
+  <body>
+    <div th:fragment="header" class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+               <span class="android-title mdl-layout-title">
+               <img class="android-logo-image img-responsive" th:src="@{/front-end/image/icon-events.png}"/>
+               </span>
+               <a class="mdl-navigation__link mdl-typography--text-uppercase" th:href="@{/}">QUẢN LÝ SỰ KIỆN</a>
+                
+               <!-- Add spacer, to align navigation to the right in desktop -->
+               <div class="android-header-spacer mdl-layout-spacer"></div>
+               
+               <!-- Navigation -->
+               <div class="android-navigation-container">
+                  <nav class="android-navigation mdl-navigation">
+                     <a class="mdl-navigation__link mdl-typography--text-uppercase" th:href="@{/}">
+                     <i class="material-icons">home</i> TRANG CHỦ
+                     </a>
+                     
+                     <button class="mdl-button mdl-js-button mdl-navigation__link mdl-typography--text-uppercase" id="topic">
+                     <i class="material-icons">event</i> HOẠT ĐỘNG</button>
+                     <ul class="mdl-menu md-menu--large mdl-js-menu mdl-menu--bottom-left mdl-js-ripple-effect" for="topic">
+                        <li class="mdl-menu__item" th:each="topic:${topics}" th:href="@{'/category/'+${topic.id}}"><a  th:href="@{'/category/'+${topic.id}}" th:text="${topic.name}"></a></li>
+                     </ul>
+                     <button th:if="${session.sessionUser}" class="mdl-button mdl-js-button mdl-navigation__link mdl-typography--text-uppercase" id="account">
+                     <i class="material-icons">account_circle</i><span th:text="${session.sessionNameUser}"></span>
+                     </button>
+                     <ul class="mdl-menu md-menu--large mdl-js-menu mdl-menu--bottom-left mdl-js-ripple-effect" for="account">
+                        <li class="mdl-menu__item"><a th:href="@{/profile}">Trang cá nhân</a></li>
+                        <li>
+                           <div class="android-drawer-separator"></div>
+                        </li>
+                        <li class="mdl-menu__item"><a th:href="@{/userlogout}">Đăng xuất</a></li>
+                     </ul>
+                     <a th:if="${session.sessionUser} == null" class="mdl-navigation__link mdl-typography--text-uppercase" th:href="@{/login}">
+                     <i class="material-icons">account_box</i> ĐĂNG NHẬP
+                     </a>
+                     <a th:if="${session.sessionUser} == null" class="mdl-navigation__link mdl-typography--text-uppercase" th:href="@{/register}">
+                     <i class="material-icons">lock</i> ĐĂNG KÝ
+                     </a>
+
+                  </nav>
+               </div>
+            </div>
+         </div>
+       
+    <div th:fragment="sidenav" class="android-drawer mdl-layout__drawer">
+            <div class="mdl-layout-title">
+            	<img th:if="${session.sessionUser}" class="img-responsive img-circle" th:src="'/upload/'+${session.sessionAvatarUser}"	id="avataruser" width="80px" height="80px"/>
+            	<img th:if="${session.sessionUser}==null" class="img-responsive img-circle" th:src="@{/front-end/image/lggo.png}"	id="avataruser" width="60px" height="60px"/>
+            	<span th:text="${session.sessionNameUser}" th:unless="${session == null}">Người dùng</span>
+            </div>
+            <nav class="mdl-navigation layout-mdl-sidenav">
+               <span class="mdl-navigation__link" href=""><i class="material-icons">event</i>Hoạt Động</span>
+               <a class="mdl-navigation__link" th:each="topic:${topics}" th:href="@{'/category/'+${topic.id}}"  th:text="${topic.name}">Tiếp sức mùa thi</a>
+               <div class="android-drawer-separator"></div>
+               <a th:if="${session.sessionUser}" class="mdl-navigation__link" th:href="@{/favorite-user}"><i class="material-icons">favorite</i>Sự kiện yêu thích </a>
+               <div class="android-drawer-separator"></div>
+               <span class="mdl-navigation__link" href=""><i class="material-icons">account_circle</i>Tài Khoản</span>
+               <a th:if="${session.sessionUser} == null" class="mdl-navigation__link" th:href="@{/login}"><i class="material-icons">account_box</i> Đănh Nhập</a>
+               <a th:if="${session.sessionUser} == null" class="mdl-navigation__link" th:href="@{/register}"><i class="material-icons">lock</i> Đăng Ký</a>
+               <a th:if="${session.sessionUser}"  class="mdl-navigation__link" th:href="@{/userlogout}"><i class="material-icons">input</i> Đăng Xuất</a>
+            </nav>
+         </div>         
+   
+   	<div th:fragment="footer" id="footer">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-md-4">
+                        <div class="text-center">
+                           <img src="http://oi60.tinypic.com/w8lycl.jpg" class="img-circle" alt="the-brains"/>
+                           <h4 class="footertext">Programmer</h4>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="text-center">
+                           <img src="http://oi60.tinypic.com/2z7enpc.jpg" class="img-circle" alt="..."/>
+                           
+                           <h4 class="footertext">Artist</h4>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="text-center">
+                           <img src="http://oi61.tinypic.com/307n6ux.jpg" class="img-circle" alt="..."/>
+                           <h4 class="footertext">Designer</h4>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="text-center">
+                        <a href="#">Trường Đại Học Sư Phạm Kỹ Thuật TP. Hồ Chí Minh</a> 
+                        <p>Code and Design By Tran Quoc Thien</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+   <script src="../static/front-end/js/jquery.min.js" th:src="@{/front-end/js/jquery.min.js}"></script>
+   <script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+   <script src="../static/front-end/bootstrap/js/bootstrap.min.js" th:src="@{/front-end/bootstrap/js/bootstrap.min.js}"></script>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="layout::head">
+    
+  </head>
+  <body class="sidebar-mini fixed">
+    <div class="wrapper">
+      <!-- Navbar-->
+      <header th:replace="layout::header" class="main-header hidden-print">
+        
+      </header>
+      <!-- Side-Nav-->
+      <aside th:replace="layout::sidebar" class="main-sidebar hidden-print">
+        
+      </aside>
+      <div class="content-wrapper">
+        <div class="page-title">
+          <div>
+            <h1>Danh sách sự kiện</h1>
+            <ul class="breadcrumb side">
+              <li><i class="fa fa-home fa-lg"></i></li>
+              <li><a href="#">Dashboard</a></li>
+              <li>Danh sách sự kiện</li>
+            </ul>
+          </div>
+          <div>
+              <a th:href="@{/admin/event/add}" class="btn btn-primary icon-btn"><i class="fa fa-plus"></i>Thêm sự kiện	</a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body table-responsive">
+                <table id="sampleTable" class="table table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Tiêu đề</th>
+                      <th>Bắt đầu</th>
+                      <th>Quan trọng</th>
+                      <th>Chủ đề</th>
+                      <th>Đơn vị</th>
+                      <th>Ngày Tạo</th>
+                      <th>Người Tạo</th>
+                      <th class="text-center">Action</th>
+                      <th class="text-center">Danh sách tham dự</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="item:${events}">
+                      <td th:text="${item.id}">1</td>
+                      <td th:text="${item.title}">Thế giới tà ác</td>
+                      <td th:text="${item.starttime}"></td>
+                      <td th:text="${item.important? 'Có' : 'Không'}">Quan Trọng</td>
+                      <td th:text="${item.topic.getName()}">1</td>
+                      <td th:text="${item.place.getName_place()}">1</td>
+                      <td th:text="${item.created_at}"></td>
+                      <td th:text="${item.account.getFullname()}"></td>
+                      <td class="text-center">
+                        <a th:href="@{'/admin/event/delete/'+ ${item.id}}" class="btn btn-danger btn-flat"><i class="fa fa-lg fa-close"></i></a>
+                        <a th:href="@{'/admin/event/edit/'+ ${item.id}}" class="btn btn-info btn-flat"><i class="fa fa-lg fa-edit"></i></a>
+                      </td>
+                      <td class="text-center"><a th:href="@{'/admin/event/view/'+ ${item.id}}" class="btn btn-success btn-flat"><i class="fa fa-lg fa-eye"></i></a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>	
+    </div>
+    
+    <script src="../static/js/jquery-2.1.4.min.js" th:src="@{/js/jquery-2.1.4.min.js}" type="text/javascript"></script>
+    <script src="../static/js/essential-plugins.js" th:src="@{/js/essential-plugins.js}"></script>
+    <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../static/js/plugins/pace.min.js" th:src="@{/js/plugins/pace.min.js}"></script>
+    <script src="../static/js/main.js" th:src="@{/js/main.js}"></script>
+    <script type="text/javascript" src="../static/js/plugins/jquery.dataTables.min.js" th:src="@{/js/plugins/jquery.dataTables.min.js}"></script>
+    <script type="text/javascript" src="../static/js/plugins/dataTables.bootstrap.min.js" th:src="@{/js/plugins/dataTables.bootstrap.min.js}"></script>
+    <script src="../static/js/plugins/sweetalert.min.js" th:src="@{/js/plugins/sweetalert.min.js}"></script>
+    <script src="../static/js/plugins/bootstrap-notify.min.js" th:src="@{/js/plugins/bootstrap-notify.min.js}"></script>
+    <script type="text/javascript">
+      $('#sampleTable').DataTable();
+    </script>
+    <div th:if="${message}">
+    <input type="hidden" th:value="${message}" id="content"/>
+    <script type="text/javascript">
+    	var value = $("#content").val();
+	    $.notify({
+	  		title: "Thông báo :",
+	  		message: value,
+	  		icon: 'fa fa-check' 
+	  	},{
+	  		type: "success"
+	  	});
+    </script>
+    </div>
+  </body>
+</html>

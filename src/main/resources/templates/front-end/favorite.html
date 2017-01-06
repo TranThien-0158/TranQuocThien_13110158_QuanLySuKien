@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	  <head th:replace="master::head">
+	
+	  </head>	
+	  <body>
+  		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  			<div th:replace="master::header">
+  			
+  			</div>
+  			<div th:replace="master::sidenav">
+  			
+  			</div>
+  			<main class="mdl-layout__content">
+  				<div class="page-content">
+	               
+	               <div class="container">
+	                  <div class="row">
+	                  	 <div class="col-md-12" >
+	                  	 	<div class="card">
+	                  	 		<ul class="breadcrumb" >
+								  <li><a th:href="@{/home}">Home</a></li>
+								  <li class="active">Data</li>
+								</ul>
+	                  	 	</div>
+	                  		
+						</div>
+	                     <div th:each="event:${eventuser}" class="col-md-6">
+	                        <div class="card">
+	                           <div class="card-image">
+	                              <img class="img-responsive" th:src="'/banner/'+${event.event.getBanner()}"/>
+	                           </div>
+	                           <!-- card image -->
+	                           <div class="card-content">
+	                              <span class="card-title"><a th:href="@{'/detail/'+${event.event.getId()}}" th:text="${event.event.getTitle()}">Giải xe đạp vô địch thế giới</a></span>                    
+	                              
+	                              
+	                           </div>
+	                           <!-- card content -->
+	                           <div class="card-action">
+	                              <p>Ngày diễn ra: <span th:text="${#calendars.format(event.event.getStarttime())}"></span></p>
+	                              <a th:href="@{'/category/'+${event.event.getTopic().getId()}}" th:text="${event.event.getTopic().getName()}">Thể thao</a>
+	                              <a th:href="@{'/place/'+${event.event.getPlace().getId()}}" th:text="${event.event.getPlace().getName_place()}">Khoa Công Nghệ Thông Tin</a>
+	                              <span class="pull-right" th:text="${event.event.getView()} + ' lượt xem'" >
+	                              	<i class="material-icons">remove_red_eye</i>
+	                              </span>
+	                           </div>
+	                           <!-- card actions -->
+	                           <div class="mdl-card__menu">
+	                              <button id="tt1" type="submit" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+	                              <i class="material-icons" style="color:red">favorite</i>
+	                              </button>
+	                              <div class="mdl-tooltip" data-mdl-for="tt1">
+	                                 Yêu thích
+	                              </div>
+	                           </div>
+	                        </div>
+	                     </div>
+	                  </div>
+	               </div>
+	            </div>
+  				<div class="gap"></div>
+  				<div th:replace="master::footer"></div>
+  			</main>
+  		</div>
+	   <script src="../static/front-end/js/jquery.min.js" th:src="@{/front-end/js/jquery.min.js}"></script>
+	   <script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+	   <script src="../static/front-end/bootstrap/js/bootstrap.min.js" th:src="@{/front-end/bootstrap/js/bootstrap.min.js}"></script>
+	  </body>
+</html>
